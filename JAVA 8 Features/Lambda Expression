@@ -1,0 +1,46 @@
+Lambda Expression : 
+
+we can write in 4 manner :
+
+Type 1 : if only single statement remove { remove this curly braces }
+example 1 : 
+            (String str) -> {return str.length()} 
+can be written as 
+            (String str) -> return str.length()
+
+
+Type 2 : Use type inference, compiler gusess the context
+example 2 : 
+            (int a, int b) -> {System.out.print(a + b);}
+can be written as 
+             (a,b) -> System.out.print(a + b);
+
+
+
+Type 3 : No return keyword 
+example 3 :
+          (String str) -> {return str.length();}
+can be written as 
+          (str) -> str.length();
+
+
+No return in single expression: For single expressions, the return value is implicit.
+
+Function<Integer,Integer> square = x -> x * x;
+int result = square.apply(5);
+
+Use return in block bodies: When using a block body, you must explicitly use the return keyword.
+
+Function<Integer,Integer> increment = x -> {
+int result = x + 1;
+return result;
+ };
+int incrementedValue = increment.apply(5);
+
+
+Type 4 : If single parameter skip small brackets
+example 4 : 
+           (str) -> str.length();
+can be written as 
+            str -> str.length();
+
