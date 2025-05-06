@@ -8,6 +8,7 @@ public class Main {
      System.out.println("Enter 1 for descending order sorting:::");
      int n = sc.nextInt();
      DescendingOrderSorting obj = new DescendingOrderSorting();
+     System.out.println(obj);
      switch (n){
          case 1:
              obj.SortingUsingLambdaExpression();
