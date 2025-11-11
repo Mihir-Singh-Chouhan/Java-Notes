@@ -1,0 +1,177 @@
+Perfect — the image shows a **Comparison Table of Access Modifiers in Java**, listing how `default`, `private`, `protected`, and `public` work across various contexts (same class, same package subclass, different package subclass, etc.).
+
+Let’s create a **complete Java example** demonstrating *all* cases from that table.
+
+---
+
+### 🧩 Directory structure
+
+We'll use two packages to cover both “same package” and “different package” scenarios.
+
+```
+src/
+ ├── package1/
+ │     ├── BaseClass.java
+ │     └── SamePackageSubclass.java
+ │     └── SamePackageNonSubclass.java
+ └── package2/
+       ├── DifferentPackageSubclass.java
+       └── DifferentPackageNonSubclass.java
+```
+
+---
+
+### ✅ `package1/BaseClass.java`
+
+```java
+package package1;
+
+public class BaseClass {
+    // Different access modifiers
+    private String privateVar = "Private Variable";
+    String defaultVar = "Default Variable";           // default access
+    protected String protectedVar = "Protected Variable";
+    public String publicVar = "Public Variable";
+
+    public void display() {
+        System.out.println("---- Inside BaseClass ----");
+        // Accessible everywhere in the same class
+        System.out.println(privateVar);
+        System.out.println(defaultVar);
+        System.out.println(protectedVar);
+        System.out.println(publicVar);
+    }
+}
+```
+
+---
+
+### ✅ `package1/SamePackageSubclass.java`
+
+```java
+package package1;
+
+public class SamePackageSubclass extends BaseClass {
+    public void display() {
+        System.out.println("---- Inside SamePackageSubclass ----");
+        // privateVar -> Not accessible
+        // System.out.println(privateVar); // ❌
+        System.out.println(defaultVar);      // ✅ Same package
+        System.out.println(protectedVar);    // ✅ Inherited
+        System.out.println(publicVar);       // ✅ Public
+    }
+}
+```
+
+---
+
+### ✅ `package1/SamePackageNonSubclass.java`
+
+```java
+package package1;
+
+public class SamePackageNonSubclass {
+    public void display() {
+        BaseClass obj = new BaseClass();
+        System.out.println("---- Inside SamePackageNonSubclass ----");
+        // System.out.println(obj.privateVar);   // ❌ private not accessible
+        System.out.println(obj.defaultVar);      // ✅ same package
+        System.out.println(obj.protectedVar);    // ✅ same package
+        System.out.println(obj.publicVar);       // ✅ public
+    }
+}
+```
+
+---
+
+### ✅ `package2/DifferentPackageSubclass.java`
+
+```java
+package package2;
+import package1.BaseClass;
+
+public class DifferentPackageSubclass extends BaseClass {
+    public void display() {
+        System.out.println("---- Inside DifferentPackageSubclass ----");
+        // System.out.println(privateVar);   // ❌ private not accessible
+        // System.out.println(defaultVar);   // ❌ default not accessible
+        System.out.println(protectedVar);     // ✅ accessible via inheritance
+        System.out.println(publicVar);        // ✅ public
+    }
+}
+```
+
+---
+
+### ✅ `package2/DifferentPackageNonSubclass.java`
+
+```java
+package package2;
+import package1.BaseClass;
+
+public class DifferentPackageNonSubclass {
+    public void display() {
+        BaseClass obj = new BaseClass();
+        System.out.println("---- Inside DifferentPackageNonSubclass ----");
+        // System.out.println(obj.privateVar);   // ❌
+        // System.out.println(obj.defaultVar);   // ❌
+        // System.out.println(obj.protectedVar); // ❌ not accessible via object
+        System.out.println(obj.publicVar);       // ✅ public only
+    }
+}
+```
+
+---
+
+### ✅ `Main.java` (to test all)
+
+```java
+import package1.*;
+import package2.*;
+
+public class Main {
+    public static void main(String[] args) {
+        BaseClass base = new BaseClass();
+        base.display();
+
+        new SamePackageSubclass().display();
+        new SamePackageNonSubclass().display();
+        new DifferentPackageSubclass().display();
+        new DifferentPackageNonSubclass().display();
+    }
+}
+```
+
+---
+
+### 🧾 Output (simplified expected)
+
+```
+---- Inside BaseClass ----
+Private Variable
+Default Variable
+Protected Variable
+Public Variable
+
+---- Inside SamePackageSubclass ----
+Default Variable
+Protected Variable
+Public Variable
+
+---- Inside SamePackageNonSubclass ----
+Default Variable
+Protected Variable
+Public Variable
+
+---- Inside DifferentPackageSubclass ----
+Protected Variable
+Public Variable
+
+---- Inside DifferentPackageNonSubclass ----
+Public Variable
+```
+
+---
+
+Would you like me to include comments in each line showing **why** it’s accessible (e.g. “✅ because same package” / “❌ because different package”)?
+That version is great for documentation or study notes.
